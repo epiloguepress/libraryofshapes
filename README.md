@@ -1,8 +1,12 @@
 ##Flatland##
 
-Requirements: git, bower and npm.
+###Requirements###
 
-#Getting started#
+-   git
+-   bower
+-   npm
+
+###Getting started###
 
 `git clone https://github.com/arodic/flatland.git`
 
@@ -10,7 +14,7 @@ Requirements: git, bower and npm.
 
 `bower install`
 
-#Directory structure#
+###Directory structure###
 
 **app/** Application code.
 
