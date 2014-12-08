@@ -29,16 +29,17 @@
       },
 
       ready: function() {
-
         this._resizeAction = this.resizeAction.bind(this);
+        this._keydownAction = this.keydownAction.bind(this);
         window.addEventListener('resize', this._resizeAction);
-
+        window.addEventListener('keydown', this._keydownAction);
       },
+
       domReady: function() {
         setTimeout(this._resizeAction, 1);
       },
-      resizeAction: function() {
 
+      resizeAction: function() {
         this.columnWidth = window.innerWidth;;
         this.$.content.style['-moz-column-width'] = this.columnWidth + 'px';
         this.$.content.style['-moz-column-gap'] = '0px';
@@ -46,13 +47,26 @@
         this.$.content.style['-webkit-column-gap'] = '0px';
         this.$.content.style['column-width'] = this.columnWidth + 'px';
         this.$.content.style['column-gap'] = '0px';
-
         setTimeout(function() {
           this.numPages = Math.ceil(this.scrollWidth / this.columnWidth);
           this.currentPage = Math.floor(this.currentProgress * this.numPages) + 1;
           this.currentPageChanged();
         }.bind(this),1);
+      },
 
+      keydownAction: function(event) {
+        event.preventDefault();
+        switch (event.which) {
+          case 13: // enter
+          case 32: // space
+          case 39: // right
+            this.nextPage();
+            break;
+          case 8: // backspace
+          case 37: // left
+            this.previousPage();
+            break;
+        }
       },
 
       scrollAction: function() {

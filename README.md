@@ -20,10 +20,10 @@
 
 **app/** Application code.
 
-**prototypes/** Various prototypes.
+**app/prototypes/** Various prototypes.
 
-**components/** third-party dependencies installed via bower.
+**app/components/** third-party dependencies installed via bower.
 
-**lib/** javascript libraries.
+**app/lib/** javascript libraries.
 
-**text/** Flatland text.
+**app/text/** Flatland text.
