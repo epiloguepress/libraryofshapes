@@ -1,0 +1,19 @@
+{
+  "name": "flatland",
+  "version": "0.0.0",
+  "homepage": "https://github.com/arodic/flatland",
+  "authors": [
+    "Aki Rodic <aleksandar.xyz@gmail.com>",
+    "Jono Brandel <jonobrandel@gmail.com>",
+    "Chris Lauritzen <chrislauritzen@gmail.com>"
+  ],
+  "license": "All rights reserved © 2014 Epilogue Press",
+  "ignore": [
+    "**/.*",
+    "modules",
+    "components"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#~0.5.1"
+  }
+}

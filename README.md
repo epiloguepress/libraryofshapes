@@ -14,6 +14,8 @@
 
 `bower install`
 
+`python -m SimpleHTTPServer`
+
 ###Directory structure###
 
 **app/** Application code.
@@ -21,3 +23,5 @@
 **prototypes/** Various prototypes.
 
 **components/** third-party dependencies installed via bower.
+
+**lib/** javascript libraries.
