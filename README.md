@@ -25,3 +25,5 @@
 **components/** third-party dependencies installed via bower.
 
 **lib/** javascript libraries.
+
+**text/** Flatland text.
