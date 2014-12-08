@@ -1,85 +1,21 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<!-- saved from url=(0048)http://www.gutenberg.org/cache/epub/97/pg97.html -->
-<html xmlns="http://www.w3.org/1999/xhtml"><script>(function main() {
-    // Create enabled event
-    function fireEnabledEvent() {
-        // If gli exists, then we are already present and shouldn't do anything
-        if (!window.gli) {
-            setTimeout(function () {
-                var enabledEvent = document.createEvent("Event");
-                enabledEvent.initEvent("WebGLEnabledEvent", true, true);
-                document.dispatchEvent(enabledEvent);
-            }, 0);
-        } else {
-            //console.log("WebGL Inspector already embedded on the page - disabling extension");
-        }
-    };
-
-    // Grab the path root from the extension
-    document.addEventListener("WebGLInspectorReadyEvent", function (e) {
-        var pathElement = document.getElementById("__webglpathroot");
-        if (window["gliloader"]) {
-            gliloader.pathRoot = pathElement.innerText;
-        } else {
-            // TODO: more?
-            window.gliCssUrl = pathElement.innerText + "gli.all.css";
-        }
-    }, false);
-
-    // Rewrite getContext to snoop for webgl
-    var originalGetContext = HTMLCanvasElement.prototype.getContext;
-    if (!HTMLCanvasElement.prototype.getContextRaw) {
-        HTMLCanvasElement.prototype.getContextRaw = originalGetContext;
-    }
-    HTMLCanvasElement.prototype.getContext = function () {
-        var ignoreCanvas = this.internalInspectorSurface;
-        if (ignoreCanvas) {
-            return originalGetContext.apply(this, arguments);
-        }
-
-        var result = originalGetContext.apply(this, arguments);
-        if (result == null) {
-            return null;
-        }
-
-        var contextNames = ["moz-webgl", "webkit-3d", "experimental-webgl", "webgl", "3d"];
-        var requestingWebGL = contextNames.indexOf(arguments[0]) != -1;
-        if (requestingWebGL) {
-            // Page is requesting a WebGL context!
-            fireEnabledEvent(this);
-
-            // If we are injected, inspect this context
-            if (window.gli) {
-                if (gli.host.inspectContext) {
-                    // TODO: pull options from extension
-                    result = gli.host.inspectContext(this, result);
-                    // NOTE: execute in a timeout so that if the dom is not yet
-                    // loaded this won't error out.
-                    window.setTimeout(function() {
-                        var hostUI = new gli.host.HostUI(result);
-                        result.hostUI = hostUI; // just so we can access it later for debugging
-                    }, 0);
-                }
-            }
-        }
-
-        return result;
-    };
-})();</script><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><title> </title><meta content="text/css" http-equiv="Content-Style-Type"><link href="http://purl.org/dc/terms/" rel="schema.DCTERMS">
-<link href="http://id.loc.gov/vocabulary/relators" rel="schema.MARCREL">
-<meta content="Flatland: a romance of many dimensions" name="DCTERMS.title">
-<meta content="http://www.gutenberg.orgfiles/97/97.txt" name="DCTERMS.source">
-<meta content="en" scheme="DCTERMS.RFC4646" name="DCTERMS.language">
-<meta content="2013-03-13T09:33:03.262026+00:00" scheme="DCTERMS.W3CDTF" name="DCTERMS.modified">
-<meta content="Public domain in the USA." name="DCTERMS.rights">
-<meta content="Abbott, Edwin Abbott, 1838-1926" name="DCTERMS.creator">
-<meta content="Science fiction" scheme="DCTERMS.LCSH" name="DCTERMS.subject">
-<meta content="Geometry -- Fiction" scheme="DCTERMS.LCSH" name="DCTERMS.subject">
-<meta content="Fourth dimension" scheme="DCTERMS.LCSH" name="DCTERMS.subject">
-<meta content="Mathematics" scheme="DCTERMS.LCSH" name="DCTERMS.subject">
-<meta content="1994-01-01" scheme="DCTERMS.W3CDTF" name="DCTERMS.created">
-<meta content="width=device-width" name="viewport">
-<meta content="EpubMaker 0.3.20a6 by Marcello Perathoner &lt;webmaster@gutenberg.org&gt;" name="generator">
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.1//EN' 'http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd'>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head><title> </title><meta content="text/css" http-equiv="Content-Style-Type"/><link href="http://purl.org/dc/terms/" rel="schema.DCTERMS"/>
+<link href="http://id.loc.gov/vocabulary/relators" rel="schema.MARCREL"/>
+<meta content="Flatland: a romance of many dimensions" name="DCTERMS.title"/>
+<meta content="http://www.gutenberg.orgfiles/97/97.txt" name="DCTERMS.source"/>
+<meta content="en" scheme="DCTERMS.RFC4646" name="DCTERMS.language"/>
+<meta content="2013-03-13T09:33:03.262026+00:00" scheme="DCTERMS.W3CDTF" name="DCTERMS.modified"/>
+<meta content="Public domain in the USA." name="DCTERMS.rights"/>
+<meta content="Abbott, Edwin Abbott, 1838-1926" name="DCTERMS.creator"/>
+<meta content="Science fiction" scheme="DCTERMS.LCSH" name="DCTERMS.subject"/>
+<meta content="Geometry -- Fiction" scheme="DCTERMS.LCSH" name="DCTERMS.subject"/>
+<meta content="Fourth dimension" scheme="DCTERMS.LCSH" name="DCTERMS.subject"/>
+<meta content="Mathematics" scheme="DCTERMS.LCSH" name="DCTERMS.subject"/>
+<meta content="1994-01-01" scheme="DCTERMS.W3CDTF" name="DCTERMS.created"/>
+<meta content="width=device-width" name="viewport"/>
+<meta content="EpubMaker 0.3.20a6 by Marcello Perathoner &lt;webmaster@gutenberg.org&gt;" name="generator"/>
 <style type="text/css">
 .pageno       { position: absolute; right: 95%; font: medium sans-serif; text-indent: 0 }
 .pageno:after { color: gray; content: '[' attr(title) ']' }
@@ -89,7 +25,7 @@
 pre           { font-family: monospace; font-size: 0.9em; white-space: pre-wrap }
 </style>
 </head>
-  <body class=" hasGoogleVoiceExt"><p id="id00000">The Project Gutenberg EBook of Flatland, by Edwin A. Abbott</p>
+  <body><p id="id00000">The Project Gutenberg EBook of Flatland, by Edwin A. Abbott</p>
 
 <p id="id00001">This eBook is for the use of anyone anywhere at no cost and with
 almost no restrictions whatsoever.  You may copy it, give it away or
@@ -112,43 +48,43 @@ Last updated: January 19, 2005</p>
 
 <p id="id00008">1884</p>
 
-<p id="id00009" style="margin-top: 3em">&nbsp;&nbsp;To<br>
+<p id="id00009" style="margin-top: 3em">  To<br/>
 
-&nbsp;&nbsp;The Inhabitance of SPACE IN GENERAL<br>
+  The Inhabitance of SPACE IN GENERAL<br/>
 
-&nbsp;&nbsp;And H.C. IN PARTICULAR<br>
+  And H.C. IN PARTICULAR<br/>
 
-&nbsp;&nbsp;This Work is Dedicated<br>
+  This Work is Dedicated<br/>
 
-&nbsp;&nbsp;By a Humble Native of Flatland<br>
+  By a Humble Native of Flatland<br/>
 
-&nbsp;&nbsp;In the Hope that<br>
+  In the Hope that<br/>
 
-&nbsp;&nbsp;Even as he was Initiated into the Mysteries<br>
+  Even as he was Initiated into the Mysteries<br/>
 
-&nbsp;&nbsp;Of THREE DIMENSIONS<br>
+  Of THREE DIMENSIONS<br/>
 
-&nbsp;&nbsp;Having been previously conversant<br>
+  Having been previously conversant<br/>
 
-&nbsp;&nbsp;With ONLY TWO<br>
+  With ONLY TWO<br/>
 
-&nbsp;&nbsp;So the Citizens of that Celestial Region<br>
+  So the Citizens of that Celestial Region<br/>
 
-&nbsp;&nbsp;May aspire yet higher and higher<br>
+  May aspire yet higher and higher<br/>
 
-&nbsp;&nbsp;To the Secrets of FOUR FIVE or EVEN SIX Dimensions<br>
+  To the Secrets of FOUR FIVE or EVEN SIX Dimensions<br/>
 
-&nbsp;&nbsp;Thereby contributing<br>
+  Thereby contributing<br/>
 
-&nbsp;&nbsp;To the Enlargment of THE IMAGINATION<br>
+  To the Enlargment of THE IMAGINATION<br/>
 
-&nbsp;&nbsp;And the possible Development<br>
+  And the possible Development<br/>
 
-&nbsp;&nbsp;Of that most and excellent Gift of MODESTY<br>
+  Of that most and excellent Gift of MODESTY<br/>
 
-&nbsp;&nbsp;Among the Superior Races<br>
+  Among the Superior Races<br/>
 
-&nbsp;&nbsp;Of SOLID HUMANITY<br>
+  Of SOLID HUMANITY<br/>
 </p>
 
 <p id="id00010">***</p>
@@ -233,9 +169,9 @@ in our country.</p>
 
 <h2 id="id00024" style="margin-top: 4em">SECTION 2  Of the Climate and Houses in Flatland</h2>
 
-<p id="id00025" style="margin-top: 2em">As with you, so also with us, there are four points of the compass<br>
+<p id="id00025" style="margin-top: 2em">As with you, so also with us, there are four points of the compass<br/>
 
-North, South, East, and West.<br>
+North, South, East, and West.<br/>
 </p>
 
 <p id="id00026">There being no sun nor other heavenly bodies, it is impossible for us
@@ -2185,13 +2121,13 @@ should be no ventilators in our new house."  "Nor are they any," said
 I; "but what makes you think that the stranger is a Woman?  I see by my
 power of Sight Recognition—"</p>
 
-<p id="id00232">"Oh, I have no patience with your Sight Recognition," replied she,<br>
+<p id="id00232">"Oh, I have no patience with your Sight Recognition," replied she,<br/>
 
-"'Feeling is believing' and 'A Straight Line to the touch is worth a<br>
+"'Feeling is believing' and 'A Straight Line to the touch is worth a<br/>
 
-Circle to the sight'"—two Proverbs, very common with the Frailer Sex<br>
+Circle to the sight'"—two Proverbs, very common with the Frailer Sex<br/>
 
-in Flatland.<br>
+in Flatland.<br/>
 </p>
 
 <p id="id00233">"Well," said I, for I was afraid of irritating her, "if it must be so,
@@ -2270,9 +2206,9 @@ whence his visitor came?</p>
 
 <p id="id00244">Stranger.  From Space, from Space, Sir:  whence else?</p>
 
-<p id="id00245">I.  Pardon me, my Lord, but is not your Lordship already in Space, your<br>
+<p id="id00245">I.  Pardon me, my Lord, but is not your Lordship already in Space, your<br/>
 
-Lordship and his humble servant, even at this moment?<br>
+Lordship and his humble servant, even at this moment?<br/>
 </p>
 
 <p id="id00246">Stranger.  Pooh! what do you know of Space?  Define Space.</p>
@@ -2506,9 +2442,9 @@ accordance with Analogy—only, by the way, you must not speak of the
 result as being a Figure, but as a Solid.  But I will describe it to
 you.  Or rather not I, but Analogy.</p>
 
-<p id="id00298">We began with a single Point, which of course—being itself a<br>
+<p id="id00298">We began with a single Point, which of course—being itself a<br/>
 
-Point—has only ONE terminal Point.<br>
+Point—has only ONE terminal Point.<br/>
 </p>
 
 <p id="id00299">One Point produces a Line with TWO terminal Points.</p>
@@ -3182,13 +3118,13 @@ to be patent even to the Female Sex.</p>
 <h2 id="id00400" style="margin-top: 4em">SECTION 21  How I tried to teach the Theory of Three Dimensions
             to my Grandson, and with what success</h2>
 
-<p id="id00401" style="margin-top: 2em">I awoke rejoicing, and began to reflect on the glorious career before<br>
+<p id="id00401" style="margin-top: 2em">I awoke rejoicing, and began to reflect on the glorious career before<br/>
 
-me.  I would go forth, methought, at once, and evangelize the whole of<br>
+me.  I would go forth, methought, at once, and evangelize the whole of<br/>
 
-Flatland.  Even to Women and Soldiers should the Gospel of Three<br>
+Flatland.  Even to Women and Soldiers should the Gospel of Three<br/>
 
-Dimensions be proclaimed.  I would begin with my Wife.<br>
+Dimensions be proclaimed.  I would begin with my Wife.<br/>
 </p>
 
 <p id="id00402">Just as I had decided on the plan of my operations, I heard the sound
@@ -3844,13 +3780,13 @@ business@pglaf.org.  Email contact links and up to date contact
 information can be found at the Foundation's web site and official
 page at http://pglaf.org</p>
 
-<p id="id00476">For additional contact information:<br>
+<p id="id00476">For additional contact information:<br/>
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dr. Gregory B. Newby<br>
+     Dr. Gregory B. Newby<br/>
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Chief Executive and Director<br>
+     Chief Executive and Director<br/>
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gbnewby@pglaf.org<br>
+     gbnewby@pglaf.org<br/>
 </p>
 
 <h4 id="id00477" style="margin-top: 2em">Section 4.  Information about Donations to the Project Gutenberg
@@ -3902,7 +3838,7 @@ keep eBooks in compliance with any particular paper edition.</p>
 
 <p id="id00486" style="margin-top: 2em">Most people start at our Web site which has the main PG search facility:</p>
 
-<p id="id00487">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;http://www.gutenberg.net<br>
+<p id="id00487">     http://www.gutenberg.net<br/>
 </p>
 
 <p id="id00488">This Web site includes information about Project Gutenberg-tm,
@@ -3910,6 +3846,5 @@ including how to make donations to the Project Gutenberg Literary
 Archive Foundation, how to help produce our new eBooks, and how to
 subscribe to our email newsletter to hear about new eBooks.</p>
 
-
-
-</body></html>
+</body>
+</html>
