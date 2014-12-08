@@ -1,13 +1,17 @@
 <link rel="import" href="../../components/polymer/polymer.html">
+<link rel="import" href="../../components/core-icons/core-icons.html">
+<link rel="import" href="../../components/core-icons/av-icons.html">
 
 
-<polymer-element name="ebook-reader">
+<polymer-element name="ebook-reader" fit>
   <template>
     <link rel="stylesheet" href="ebook-reader.css">
-    <div id="content">
-	    <content>
-	    </content>
+    <div id="pageInfo">
+      <core-icon icon="av:skip-previous" on-tap="{{previousPage}}"></core-icon>
+      {{currentPage}}/{{numPages}}
+      <core-icon icon="av:skip-next" on-tap="{{nextPage}}"></core-icon>
     </div>
+    <div id="content"><content></content></div>
   </template>
   <script type="text/javascript">
   (function() {
@@ -15,17 +19,56 @@
     Polymer({
 
       publish: {
-        columnWidth: 0
+        columnWidth: 0,
+        currentProgress: 0,
+        currentPage: 1
       },
 
       eventDelegates: {
+        'scroll': 'scrollAction'
       },
 
       ready: function() {
-        this.marginWidth = 256;
-        this.columnWidth = '' + window.innerWidth - this.marginWidth + 'px';
-      	console.log(this.columnWidth);
+
+        this._resizeAction = this.resizeAction.bind(this);
+        window.addEventListener('resize', this._resizeAction);
+
       },
+      domReady: function() {
+        setTimeout(this._resizeAction, 1);
+      },
+      resizeAction: function() {
+
+        this.columnWidth = window.innerWidth;;
+        this.$.content.style['-moz-column-width'] = this.columnWidth + 'px';
+        this.$.content.style['-moz-column-gap'] = '0px';
+        this.$.content.style['-webkit-column-width'] = this.columnWidth + 'px';
+        this.$.content.style['-webkit-column-gap'] = '0px';
+        this.$.content.style['column-width'] = this.columnWidth + 'px';
+        this.$.content.style['column-gap'] = '0px';
+
+        setTimeout(function() {
+          this.numPages = Math.ceil(this.scrollWidth / this.columnWidth);
+          this.currentPage = Math.floor(this.currentProgress * this.numPages) + 1;
+          this.currentPageChanged();
+        }.bind(this),1);
+
+      },
+
+      scrollAction: function() {
+        this.currentPage = Math.round(this.numPages * this.scrollLeft / this.scrollWidth) + 1;
+      },
+      currentPageChanged: function() {
+        this.scrollLeft = (this.currentPage - 1) * this.columnWidth;
+      },
+      previousPage: function() {
+        this.currentPage = Math.max(this.currentPage - 1, 1);
+        this.currentProgress = (this.currentPage - 1) / this.numPages;
+      },
+      nextPage: function() {
+        this.currentPage = Math.min(this.currentPage + 1, this.numPages);
+        this.currentProgress = (this.currentPage - 1) / this.numPages;
+      }
     });
   })();
   </script>

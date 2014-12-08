@@ -2,20 +2,52 @@
 
 <polymer-element name="ebook-content" noscript>
 <template>
-
 <style type="text/css">
+	:host {
+      font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-size: 19px;
+      display: block;
+      width: 100%;
+      height: 100%;
+	}
+
+	.section {
+		background-color: rgba(0, 0, 255, 0.1);
+		margin: 0 64px;
+		/*padding: 0 64px;*/
+	} 
+
+	.page {
+		background-color: rgba(0, 255, 0, 0.1);
+		height: 100%;
+		margin: 0 64px;
+		margin-bottom: -20px;
+
+		/* Center text */
+		text-align: center;
+		align-items: center;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+	}
+
+	.page:first-child {
+	}
+	.page:not(:first-child) {
+	    -webkit-column-break-before: always;
+		break-before: column;
+	}
+
 	.section {
 	   -webkit-column-break-before: always;
 		break-before: column;
 	}
-	.section > *{
+	.section > * {
 	   -webkit-column-break-before: auto;
 		break-before: auto;
 	}
 </style>
-
-<div class="section">
-
+<div class="page" vertical center center-justified layout>
 	<p id="id00000">The Project Gutenberg EBook of Flatland, by Edwin A. Abbott</p>
 
 	<p id="id00001">This eBook is for the use of anyone anywhere at no cost and with
@@ -43,7 +75,7 @@
 	<p id="id00008">1884</p>
 
 </div>
-<div class="section">
+<div class="page">
 
 	<p id="id00009">  To<br/>
 

@@ -14,6 +14,7 @@
     "components"
   ],
   "dependencies": {
-    "polymer": "Polymer/polymer#~0.5.1"
+    "polymer": "Polymer/polymer#~0.5.1",
+    "core-icons": "Polymer/core-icons#~0.5.1"
   }
 }
