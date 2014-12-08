@@ -1,0 +1,28 @@
+:host {
+	display: block;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background: silver;
+	overflow: hidden;
+	overflow-x: scroll;
+} 
+
+#content {
+	/*overflow: hidden;*/
+    position: relative;
+    height: 100%;
+    -moz-column-width: {{columnWidth}};
+    -webkit-column-width: {{columnWidth}};
+    column-width: {{columnWidth}};
+
+    -moz-column-gap: 128px;
+    -webkit-column-gap: 128px;
+    column-gap: 128px;
+}
+
+#content > * {
+
+	/*margin: 4em;*/
+	/*margin: {{margin}}px;*/
+}
