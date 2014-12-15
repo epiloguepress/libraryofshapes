@@ -34,17 +34,17 @@
         window.addEventListener('resize', this._resizeAction);
         window.addEventListener('keydown', this._keydownAction);
 
-        // this.addEventListener('click', function(event) {
-        //   if (this.requestFullscreen) {
-        //     this.requestFullscreen();
-        //   } else if (this.msRequestFullscreen) {
-        //     this.msRequestFullscreen();
-        //   } else if (this.mozRequestFullScreen) {
-        //     this.mozRequestFullScreen();
-        //   } else if (this.webkitRequestFullscreen) {
-        //     this.webkitRequestFullscreen();
-        //   }
-        // }.bind(this));
+        this.addEventListener('touchstart', function(event) {
+          if (this.requestFullscreen) {
+            this.requestFullscreen();
+          } else if (this.msRequestFullscreen) {
+            this.msRequestFullscreen();
+          } else if (this.mozRequestFullScreen) {
+            this.mozRequestFullScreen();
+          } else if (this.webkitRequestFullscreen) {
+            this.webkitRequestFullscreen();
+          }
+        }.bind(this));
       },
 
       domReady: function() {
