@@ -1,52 +1,14 @@
 <link rel="import" href="../../components/polymer/polymer.html">
+<link rel="import" href="flatland-cover.html">
 
 <polymer-element name="ebook-content" noscript>
 <template>
-<style type="text/css">
-	:host {
-      font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      font-size: 19px;
-      display: block;
-      width: 100%;
-      height: 100%;
-	}
 
-	.section {
-		background-color: rgba(0, 0, 255, 0.1);
-		margin: 0 64px;
-		/*padding: 0 64px;*/
-	} 
+<div class="cover">
+	<div></div>
+	<flatland-cover></flatland-cover>
+</div>
 
-	.page {
-		background-color: rgba(0, 255, 0, 0.1);
-		height: 100%;
-		margin: 0 64px;
-		margin-bottom: -60px;
-
-		/* Center text */
-		text-align: center;
-		align-items: center;
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-	}
-
-	.page:first-child {
-	}
-	.page:not(:first-child) {
-	    -webkit-column-break-before: always;
-		break-before: column;
-	}
-
-	.section {
-	   -webkit-column-break-before: always;
-		break-before: column;
-	}
-	.section > * {
-	   -webkit-column-break-before: auto;
-		break-before: auto;
-	}
-</style>
 <div class="page">
 	<p id="id00000">The Project Gutenberg EBook of Flatland, by Edwin A. Abbott</p>
 

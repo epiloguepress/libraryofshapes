@@ -15,6 +15,7 @@
   ],
   "dependencies": {
     "polymer": "Polymer/polymer#~0.5.2",
-    "core-icons": "Polymer/core-icons#~0.5.2"
+    "core-icons": "Polymer/core-icons#~0.5.2",
+    "three-js": "git@bitbucket.org:vannevartech/three-js.git#~0.0.9"
   }
 }

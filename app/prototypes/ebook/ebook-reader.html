@@ -33,6 +33,18 @@
         this._keydownAction = this.keydownAction.bind(this);
         window.addEventListener('resize', this._resizeAction);
         window.addEventListener('keydown', this._keydownAction);
+
+        // this.addEventListener('click', function(event) {
+        //   if (this.requestFullscreen) {
+        //     this.requestFullscreen();
+        //   } else if (this.msRequestFullscreen) {
+        //     this.msRequestFullscreen();
+        //   } else if (this.mozRequestFullScreen) {
+        //     this.mozRequestFullScreen();
+        //   } else if (this.webkitRequestFullscreen) {
+        //     this.webkitRequestFullscreen();
+        //   }
+        // }.bind(this));
       },
 
       domReady: function() {
@@ -40,7 +52,7 @@
       },
 
       resizeAction: function() {
-        this.columnWidth = window.innerWidth;;
+        this.columnWidth = window.innerWidth;
         this.$.content.style['-moz-column-width'] = this.columnWidth + 'px';
         this.$.content.style['-moz-column-gap'] = '0px';
         this.$.content.style['-webkit-column-width'] = this.columnWidth + 'px';
@@ -51,11 +63,11 @@
           this.numPages = Math.ceil(this.scrollWidth / this.columnWidth);
           this.currentPage = Math.floor(this.currentProgress * this.numPages) + 1;
           this.currentPageChanged();
-        }.bind(this),1);
+        }.bind(this), 1);
       },
 
       keydownAction: function(event) {
-        event.preventDefault();
+        // event.preventDefault();
         switch (event.which) {
           case 13: // enter
           case 32: // space

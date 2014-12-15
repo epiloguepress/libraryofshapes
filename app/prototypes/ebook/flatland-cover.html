@@ -1,0 +1,77 @@
+<link rel="import" href="../../components/polymer/polymer.html">
+<link rel="import" href="../../components/three-js/three-viewport.html">
+
+
+<polymer-element name="flatland-cover" fit>
+  <template>
+    <three-viewport id="viewport" fit
+      clearColor="#222222"
+      showHelpers=false>
+    </three-viewport>
+  </template>
+  <script type="text/javascript">
+  (function() {
+
+    Polymer({
+
+      publish: {
+      },
+
+      eventDelegates: {},
+
+      ready: function() {
+
+        this.$.viewport.camera.position.set(0, 1, -20);
+
+        var skyBox = new THREE.Mesh(
+          new THREE.SphereGeometry(10, 32, 32),
+          new THREE.MeshBasicMaterial()
+        );
+        this.$.viewport.scene.add(skyBox);
+
+        var sphere = new THREE.Mesh(
+          new THREE.SphereGeometry(4, 32, 32),
+          new THREE.MeshBasicMaterial()
+        );
+        this.$.viewport.scene.add(sphere);
+        
+
+        var planeTexture = THREE.ImageUtils.loadTexture(this.resolvePath('images/squares.png'));
+        var plane = new THREE.Mesh(
+          new THREE.PlaneBufferGeometry(200, 200, 2, 2),
+          new THREE.MeshBasicMaterial({
+            color: 0xffffff,
+            map: planeTexture,
+            side: THREE.DoubleSide,
+            transparent: true,
+          })
+        );
+
+        planeTexture.repeat = new THREE.Vector2(200, 200);
+        planeTexture.wrapS = THREE.MirroredRepeatWrapping;
+        planeTexture.wrapT = THREE.MirroredRepeatWrapping;
+
+        plane.position.x = 0.02;
+        plane.position.y = - 10;
+        plane.position.z = - 0.98;
+        plane.rotation.x = - Math.PI / 2;
+
+        this.$.viewport.scene.add(plane);
+
+        var square = new THREE.Mesh(
+          new THREE.PlaneBufferGeometry(0.5, 0.5, 2, 2),
+          new THREE.MeshBasicMaterial({
+            color: 0xffffff,
+            side: THREE.DoubleSide,
+            transparent: true,
+          })
+        );
+        square.rotation.x = - Math.PI / 2;
+        square.position.y = - 9.95;
+
+        this.$.viewport.scene.add(square);
+      }
+    });
+  })();
+  </script>
+</polymer-element>
