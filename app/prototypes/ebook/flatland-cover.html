@@ -1,11 +1,11 @@
 <link rel="import" href="../../components/polymer/polymer.html">
-<link rel="import" href="../../components/three-bundle/viewport/three-viewport.html">
+<link rel="import" href="../../components/io-viewport/io-viewport.html">
 
 
 <polymer-element name="flatland-cover" fit>
   <template>
-    <three-viewport fit style="width: 100%; height: 100%" id="viewport" clearColor="#222222" showHelpers="false">
-    </three-viewport>
+    <io-viewport fit style="width: 100%; height: 100%" id="viewport" clearColor="#222222" showHelpers="false">
+    </io-viewport>
   </template>
   <script type="text/javascript">
   (function() {
@@ -56,8 +56,8 @@
         this.$.viewport.scene.add(this.shadowBase);
         // object.position.set(1,1,1)
 
-        controls = new THREE.OrbitControls(this.object, this.$.viewport);
-        controls.target.set(0,0,0.001);
+        controls = new THREE.EditorControls(this.object, this.$.viewport);
+        // controls.target.set(0,0,0.001);
 
         controls.addEventListener('change', function(event){
 

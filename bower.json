@@ -16,6 +16,8 @@
   "dependencies": {
     "polymer": "Polymer/polymer#~0.5.2",
     "core-icons": "Polymer/core-icons#~0.5.2",
-    "three-bundle": "arodic/three-bundle#dev"
+    "io-viewport": "arodic/io-viewport#~0.1.1",
+    "io-bundle": "arodic/io-bundle#~0.6.2",
+    "io-menu": "arodic/io-menu#~0.1.1"
   }
 }
