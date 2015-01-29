@@ -1,0 +1,108 @@
+<!doctype html>
+<html>
+  <head>
+    <style>
+
+      * { margin: 0; padding: 0; }
+
+      body {
+        position: absolute;
+        overflow: hidden;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="scripts">
+      <script src="./third-party/tween.js"></script>
+      <script src="./third-party/three.js"></script>
+      <script src="./third-party/two.js"></script>
+      <script src="./src/flatland.js"></script>
+      <script src="./src/texture.js"></script>
+      <script src="./src/backdrop.js"></script>
+      <script src="./src/shape.js"></script>
+      <script>
+
+        var width = window.innerWidth, height = window.innerHeight;
+
+        var renderer = new THREE.WebGLRenderer({ antialias: true });
+        var scene = new THREE.Scene();
+        var camera = new THREE.PerspectiveCamera(75);
+
+        camera.position.tween = new TWEEN.Tween(camera.position)
+          .easing(TWEEN.Easing.Quadratic.InOut);
+
+        camera.position.z = 100;
+
+        var backdrop = new Flatland.Backdrop();
+
+        var triangle = new Flatland.Shape(3);
+        var circle = new Flatland.Shape(32);
+        var square = new Flatland.Shape(4);
+
+        triangle.rotation.z = Math.PI / 2
+        square.rotation.z = Math.PI / 4;
+        backdrop.position.z = - (camera.far - 10);
+
+        var shapes = [ triangle, square, circle ];
+
+        square.position.x += 66;
+        circle.position.x -= 66;
+
+        scene.add(square);
+        scene.add(circle);
+        scene.add(triangle);
+        camera.add(backdrop);
+        scene.add(camera);
+
+        setup();
+
+        function setup() {
+
+          document.body.appendChild(renderer.domElement);
+          window.addEventListener('resize', resize, false);
+          window.addEventListener('click', function() {
+
+            var shape = shapes[Math.floor(Math.random() * shapes.length)];
+
+            shape.rotation.tween
+              .to({
+                x: shape.rotation.x + Math.PI / 2
+              }, 350)
+              .start();
+
+          }, false);
+
+          resize();
+          loop();
+
+        }
+
+        function resize() {
+
+          width = window.innerWidth;
+          height = window.innerHeight;
+
+          renderer.setSize(width, height);
+
+          camera.aspect = width / height;
+          camera.updateProjectionMatrix();
+
+        }
+
+        function loop() {
+
+          requestAnimationFrame(loop);
+
+          TWEEN.update();
+
+          camera.lookAt(triangle.position);
+
+          renderer.render(scene, camera);
+
+        }
+
+      </script>
+    </div>
+  </body>
+</html>
