@@ -1,0 +1,120 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Library</title>
+    <style>
+
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="scripts">
+      <script src="./third-party/three.js"></script>
+      <script src="./third-party/projector.js"></script>
+      <script src="./third-party/canvas-renderer.js"></script>
+      <script src="./third-party/css3d-renderer.js"></script>
+      <script src="./third-party/svg-renderer.js"></script>
+      <script src="./third-party/tween.js"></script>
+      <script src="./src/library.js"></script>
+      <script src="./src/shapes.js"></script>
+      <script>
+
+        var padding = { top: 50, left: 50, right: 50, bottom: 20 };
+        var border = { top: 10, left: 20, right: 20, bottom: 10 };
+        var margin = { top: 20, left: 20, right: 20, bottom: 20 };
+
+        var width, height;
+
+        var renderer = new THREE.WebGLRenderer({ antialias: true });
+        var camera = new THREE.OrthographicCamera(-1, -1, 1, 1, 0, 10000);
+        var scene = new THREE.Scene();
+
+        setup();
+
+        scene.add(Library.Shapes.parent);
+
+        function setup() {
+
+          renderer.setClearColor(0x000000);
+
+          document.body.appendChild(renderer.domElement);
+          window.addEventListener('resize', resize, false);
+
+          resize();
+          loop();
+
+        }
+
+        function resize() {
+
+          width = window.innerWidth;
+          height = window.innerHeight;
+
+          renderer.setSize(width, height);
+
+          camera.top = - height / 2;
+          camera.left = - width / 2;
+          camera.right = width / 2;
+          camera.bottom = height / 2;
+          camera.updateProjectionMatrix();
+
+          var area = width * height;
+          area -= padding.top + padding.left + padding.right + padding.bottom;
+          area -= margin.top + margin.left + margin.right + margin.bottom;
+
+          // TODO: Better calcuation
+          Library.Shapes.dimension = Math.sqrt(area / 9) * 0.66;
+
+          layout();
+
+        }
+
+        function layout() {
+
+          var children = Library.Shapes.parent.children;
+          var dimension = Library.Shapes.dimension;
+
+          var x = padding.left + dimension / 2, y = padding.top + dimension / 2;
+          var count = 0;
+
+          for (var i = 0, isEven = false; i < children.length; i++) {
+
+            var shape = children[i];
+            shape.position.destination.set(x - width / 2, y - height / 2, 0);
+
+            x += dimension + border.right + border.left;
+            count++;
+            if (x > width - padding.right || count >= 4) {
+              isEven = !isEven;
+              x = padding.left + dimension / 2;
+              if (isEven) {
+                x += (dimension + border.right + border.left) / 2;
+              }
+              y += dimension + border.bottom + border.top;
+              count = 0;
+            }
+
+          }
+
+        }
+
+        function loop() {
+          requestAnimationFrame(loop);
+          Library.Shapes.update();
+          renderer.render(scene, camera);
+        }
+
+      </script>
+    </div>
+  </body>
+</html>
