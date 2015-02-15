@@ -1,7 +1,6 @@
 (function() {
 
   var v = new THREE.Vector3();
-  var drag = 0.125;
 
   var Shapes = Library.Shapes = {
 
@@ -33,7 +32,7 @@
           v
             .copy(shape.position.destination)
             .sub(shape.position)
-            .multiplyScalar(drag)
+            .multiplyScalar(Library.drag)
         );
       }
 
