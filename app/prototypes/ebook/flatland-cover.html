@@ -1,134 +1,120 @@
 <link rel="import" href="../../components/polymer/polymer.html">
 <link rel="import" href="../../components/io-viewport/io-viewport.html">
 
+<script type="text/javascript" src="../../components/three.js/examples/js/loaders/ColladaLoader.js"></script>
 
 <polymer-element name="flatland-cover" fit>
   <template>
-    <io-viewport fit style="width: 100%; height: 100%" id="viewport" clearColor="#222222" showHelpers="false">
+    <io-viewport fit id="viewport"
+      clearColor="#222222"
+      showHelpers="false">
     </io-viewport>
   </template>
   <script type="text/javascript">
-  (function() {
-
     Polymer({
 
-      publish: {
-        object: null,
-        shadow: null,
-        shadowBase: null,
-        controls: null
+      eventDelegates: {
+        'tap': 'cycleShape'
       },
-
-      eventDelegates: {},
 
       ready: function() {
 
-
-
-        this.$.viewport.camera = new THREE.PerspectiveCamera(12, 1, 0.1, 1000);
-        this.$.viewport.camera.position.set(0, 5, -50);
-        this.$.viewport.camera.lookAt(new THREE.Vector3());
-
-        this.object = new THREE.Mesh(
-          // new THREE.CubeGeometry( 4, 33, 32 ),
-          // new THREE.SphereGeometry( 4, 33, 32 ),
-          // new THREE.OctahedronGeometry( 4, 3 ),
-          new THREE.IcosahedronGeometry( 4, 0 ),
-          // new THREE.TetrahedronGeometry(4, 0),
-          new THREE.MeshBasicMaterial({
-            wireframe: true
-          })
-        );
-        this.$.viewport.scene.add(this.object);
-
-        this.shadowBase = new THREE.Object3D();
-        this.shadowBase.position.set(0, -10.1, 0);
-        this.shadowBase.scale.set(1, 0.001, 1);
-        this.shadow = new THREE.Mesh(
-          this.object.geometry,
-          new THREE.MeshBasicMaterial()
-        );
-        this.shadowBase.add(this.shadow);
-
-        this.shadow.rotation = this.object.rotation;
-        this.shadow.quaternion = this.object.quaternion;
-        this.shadow.matrix = this.object.matrix;
-        this.$.viewport.scene.add(this.shadowBase);
-        // object.position.set(1,1,1)
-
-        controls = new THREE.EditorControls(this.object, this.$.viewport);
-        // controls.target.set(0,0,0.001);
-
-        controls.addEventListener('change', function(event){
-
-          this.shadow.quaternion.copy(this.object.quaternion);
-          // shadow.rotation.copy(event.target.object.rotation);
-          // shadow.matrix.copy(event.target.object.matrix);
-          // shadow.matrixAutoUpdate = false;
-          // shadow.rotationAutoUpdate = false;
-          // console.log(shadow.quaternion);
-          this.$.viewport.renderLater();
-          // console.log(shadow.quaternion);
-
-          // this.updateShadow();
-        }.bind(this));
-
-        var planeTexture = THREE.ImageUtils.loadTexture(
-          this.resolvePath('images/squares.png'), null, function(){
-            this.$.viewport.renderLater();
-            this.updateShadow();
+        this.shapes = new THREE.Object3D();
+        this.$.viewport.scene.add(this.shapes);
+        
+        var faceTexture = THREE.ImageUtils.loadTexture(
+          this.resolvePath('./models/library.jpg'), null,
+            function(){
+              this.$.viewport.renderLater();
           }.bind(this)
         );
+        faceTexture.anisotropy = 8;
 
-        var plane = new THREE.Mesh(
-          new THREE.PlaneBufferGeometry(200, 200, 2, 2),
-          new THREE.MeshBasicMaterial({
-            color: 0xffffff,
-            map: planeTexture,
-            side: THREE.DoubleSide,
-            transparent: true,
-          })
+        var faceMaterial = new THREE.MeshBasicMaterial({
+          map: faceTexture,
+          transparent: true,
+          side: THREE.DoubleSide,
+          opacity: 0.25,
+          blending: THREE.AdditiveBlending,
+          depthWrite: false,
+          depthTest: false
+        });
+
+        var lineTexture = THREE.ImageUtils.loadTexture(
+          this.resolvePath('./models/library_lines.jpg'), null,
+            function(){
+              this.$.viewport.renderLater();
+          }.bind(this)
         );
+        lineTexture.anisotropy = 8;
 
-        planeTexture.repeat = new THREE.Vector2(200, 200);
-        planeTexture.wrapS = THREE.MirroredRepeatWrapping;
-        planeTexture.wrapT = THREE.MirroredRepeatWrapping;
+        var lineMaterial = new THREE.MeshBasicMaterial({
+          map: lineTexture,
+          transparent: true,
+          side: THREE.DoubleSide,
+          blending: THREE.AdditiveBlending,
+          // blending: THREE.SubtractiveBlending,
+          depthWrite: false,
+          depthTest: false
+        });
 
-        plane.position.x = 0.02;
-        plane.position.y = - 10;
-        plane.position.z = - 0.98;
-        plane.rotation.x = - Math.PI / 2;
+        var loader = new THREE.ColladaLoader();
+        loader.load(this.resolvePath('./models/library.dae'),
+            function (collada) {
+              var shapes = collada.scene.children;
+              for (var i = shapes.length; i--;) {
+                var shapeMesh = shapes[i].children[0];
+                shapeMesh.material = faceMaterial;
+                this.shapes.add(shapeMesh);
+                var shapeLine = shapeMesh.clone();
+                shapeLine.material = lineMaterial;
+                shapeMesh.add(shapeLine);
+                shapeMesh.scale.set(20, 20, 20);
+                shapeMesh.visible = false;
 
-        this.$.viewport.scene.add(plane);
+              }
+              this.shapes.children[0].visible = true;
+              this.$.viewport.renderLater();
+        }.bind(this));
 
-        var square = new THREE.Mesh(
-          new THREE.PlaneBufferGeometry(0.5, 0.5, 2, 2),
-          new THREE.MeshBasicMaterial({
-            color: 0xffffff,
-            side: THREE.DoubleSide,
-            transparent: true,
-          })
-        );
-        square.rotation.x = - Math.PI / 2;
-        square.position.y = - 9.95;
+        // var planeTexture = THREE.ImageUtils.loadTexture(
+        //   this.resolvePath('images/squares.png'), null, function(){
+        //     this.$.viewport.renderLater();
+        //   }.bind(this)
+        // );
 
-        this.$.viewport.scene.add(square);
+        // var plane = new THREE.Mesh(
+        //   new THREE.PlaneBufferGeometry(2000, 2000, 2, 2),
+        //   new THREE.MeshBasicMaterial({
+        //     color: 0xffffff,
+        //     map: planeTexture,
+        //     side: THREE.DoubleSide,
+        //     transparent: true,
+        //   })
+        // );
 
-        this.$.viewport.helperCamera = 'asd'
+        // planeTexture.repeat = new THREE.Vector2(200, 200);
+        // planeTexture.wrapS = THREE.MirroredRepeatWrapping;
+        // planeTexture.wrapT = THREE.MirroredRepeatWrapping;
+
+        // plane.position.y = - 50;
+        // plane.rotation.x = - Math.PI / 2;
+
+        // this.$.viewport.scene.add(plane);
+
       },
-      updateShadow: function() {
-        // object.matrixAutoUpdate = false;
-        // object.rotationAutoUpdate = false;
-        // object.rotation.set(0,0,0);
-        // console.log(object.matrix.elements);
 
-        // shadow.matrix.copy(object.matrix);
-        // shadow.rotation.x = object.rotation.x;
-        // shadow.rotation.y = object.rotation.y;
-        // shadow.rotation.z = object.rotation.z;
-        // shadow.updateMatrix();
+      cycleShape: function() {
+        for (var i = 0; i < this.shapes.children.length; i++) {
+          if (this.shapes.children[i].visible) {
+            this.shapes.children[i].visible = false;
+            this.shapes.children[(i + 1) % this.shapes.children.length].visible = true;
+            this.$.viewport.renderLater();
+            return;
+          }
+        }
       }
+
     });
-  })();
   </script>
 </polymer-element>

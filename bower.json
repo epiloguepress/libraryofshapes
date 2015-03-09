@@ -14,10 +14,10 @@
     "components"
   ],
   "dependencies": {
-    "polymer": "Polymer/polymer#~0.5.2",
-    "core-icons": "Polymer/core-icons#~0.5.2",
-    "io-viewport": "arodic/io-viewport#~0.1.1",
-    "io-bundle": "arodic/io-bundle#~0.6.2",
-    "io-menu": "arodic/io-menu#~0.1.1"
+    "polymer": "Polymer/polymer#~0.5.5",
+    "core-icons": "Polymer/core-icons#~0.5.5",
+    "io-viewport": "https://github.com/arodic/io-viewport.git#~0.1.1",
+    "io-bundle": "arodic/io-value#~0.6.6",
+    "io-menu": "arodic/io-menu#~0.1.12"
   }
 }

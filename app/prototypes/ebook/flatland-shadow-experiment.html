@@ -1,0 +1,132 @@
+<link rel="import" href="../../components/polymer/polymer.html">
+<link rel="import" href="../../components/io-viewport/io-viewport.html">
+
+
+<polymer-element name="flatland-cover" fit>
+  <template>
+    <io-viewport fit style="width: 100%; height: 100%" id="viewport" clearColor="#222222" showHelpers="false">
+    </io-viewport>
+  </template>
+  <script type="text/javascript">
+  (function() {
+
+    Polymer({
+
+      publish: {
+        object: null,
+        shadow: null,
+        shadowBase: null,
+        controls: null
+      },
+
+      eventDelegates: {},
+
+      ready: function() {
+
+        this.$.viewport.camera = new THREE.PerspectiveCamera(12, 1, 0.1, 1000);
+        this.$.viewport.camera.position.set(0, 3, -30);
+        this.$.viewport.camera.lookAt(new THREE.Vector3());
+
+        this.object = new THREE.Mesh(
+          // new THREE.CubeGeometry( 4, 33, 32 ),
+          // new THREE.SphereGeometry( 4, 33, 32 ),
+          // new THREE.OctahedronGeometry( 4, 3 ),
+          new THREE.IcosahedronGeometry( 4, 0 ),
+          // new THREE.TetrahedronGeometry(4, 0),
+          new THREE.MeshBasicMaterial({
+            wireframe: true
+          })
+        );
+        this.$.viewport.scene.add(this.object);
+
+        this.shadowBase = new THREE.Object3D();
+        this.shadowBase.position.set(0, -10.1, 0);
+        this.shadowBase.scale.set(1, 0.001, 1);
+        this.shadow = new THREE.Mesh(
+          this.object.geometry,
+          new THREE.MeshBasicMaterial()
+        );
+        this.shadowBase.add(this.shadow);
+
+        this.shadow.rotation = this.object.rotation;
+        this.shadow.quaternion = this.object.quaternion;
+        this.shadow.matrix = this.object.matrix;
+        this.$.viewport.scene.add(this.shadowBase);
+        // object.position.set(1,1,1)
+
+        controls = new THREE.EditorControls(this.object, this.$.viewport);
+        // controls.target.set(0,0,0.001);
+
+        controls.addEventListener('change', function(event){
+
+          this.shadow.quaternion.copy(this.object.quaternion);
+          // shadow.rotation.copy(event.target.object.rotation);
+          // shadow.matrix.copy(event.target.object.matrix);
+          // shadow.matrixAutoUpdate = false;
+          // shadow.rotationAutoUpdate = false;
+          // console.log(shadow.quaternion);
+          this.$.viewport.renderLater();
+          // console.log(shadow.quaternion);
+
+          // this.updateShadow();
+        }.bind(this));
+
+        var planeTexture = THREE.ImageUtils.loadTexture(
+          this.resolvePath('images/squares.png'), null, function(){
+            this.$.viewport.renderLater();
+            this.updateShadow();
+          }.bind(this)
+        );
+
+        var plane = new THREE.Mesh(
+          new THREE.PlaneBufferGeometry(200, 200, 2, 2),
+          new THREE.MeshBasicMaterial({
+            color: 0xffffff,
+            map: planeTexture,
+            side: THREE.DoubleSide,
+            transparent: true,
+          })
+        );
+
+        planeTexture.repeat = new THREE.Vector2(200, 200);
+        planeTexture.wrapS = THREE.MirroredRepeatWrapping;
+        planeTexture.wrapT = THREE.MirroredRepeatWrapping;
+
+        plane.position.x = 0.02;
+        plane.position.y = - 10;
+        plane.position.z = - 0.98;
+        plane.rotation.x = - Math.PI / 2;
+
+        this.$.viewport.scene.add(plane);
+
+        var square = new THREE.Mesh(
+          new THREE.PlaneBufferGeometry(0.5, 0.5, 2, 2),
+          new THREE.MeshBasicMaterial({
+            color: 0xffffff,
+            side: THREE.DoubleSide,
+            transparent: true,
+          })
+        );
+        square.rotation.x = - Math.PI / 2;
+        square.position.y = - 9.95;
+
+        this.$.viewport.scene.add(square);
+
+        this.$.viewport.helperCamera = 'asd'
+      },
+      updateShadow: function() {
+        // object.matrixAutoUpdate = false;
+        // object.rotationAutoUpdate = false;
+        // object.rotation.set(0,0,0);
+        // console.log(object.matrix.elements);
+
+        // shadow.matrix.copy(object.matrix);
+        // shadow.rotation.x = object.rotation.x;
+        // shadow.rotation.y = object.rotation.y;
+        // shadow.rotation.z = object.rotation.z;
+        // shadow.updateMatrix();
+      }
+    });
+  })();
+  </script>
+</polymer-element>
