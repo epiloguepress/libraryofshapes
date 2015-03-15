@@ -1,0 +1,103 @@
+<link rel="import" href="../../components/polymer/polymer.html">
+<link rel="import" href="../../components/io-viewport/io-viewport.html">
+
+<script type="text/javascript" src="../../components/three.js/examples/js/loaders/ColladaLoader.js"></script>
+
+<polymer-element name="library-3d">
+  <template>
+    <style type="text/css">
+    :host {
+      display: block;
+      height: 200px;
+      position: relative;
+    }
+    io-viewport /deep/ #outline {
+      display: none;
+    }
+    </style>
+    <io-viewport fit id="viewport"
+      clearColor="#333333"
+      showHelpers="false">
+    </io-viewport>
+  </template>
+  <script type="text/javascript">
+    Polymer({
+
+      publish: {
+        shapeIndex: 0
+      },
+
+      ready: function() {
+
+        this.shapes = new THREE.Object3D();
+        this.$.viewport.scene.add(this.shapes);
+        
+        var faceTexture = THREE.ImageUtils.loadTexture(
+          this.resolvePath('./models/library.jpg'), null,
+            function(){
+              this.$.viewport.renderLater();
+          }.bind(this)
+        );
+        faceTexture.anisotropy = 8;
+
+        var faceMaterial = new THREE.MeshBasicMaterial({
+          map: faceTexture,
+          transparent: true,
+          side: THREE.DoubleSide,
+          opacity: 0.5,
+          blending: THREE.AdditiveBlending,
+          depthWrite: false,
+          depthTest: false
+        });
+
+        var lineTexture = THREE.ImageUtils.loadTexture(
+          this.resolvePath('./models/library_lines.jpg'), null,
+            function(){
+              this.$.viewport.renderLater();
+          }.bind(this)
+        );
+        lineTexture.anisotropy = 8;
+
+        var lineMaterial = new THREE.MeshBasicMaterial({
+          map: lineTexture,
+          transparent: true,
+          side: THREE.DoubleSide,
+          blending: THREE.AdditiveBlending,
+          depthWrite: false,
+          depthTest: false
+        });
+
+        var loader = new THREE.ColladaLoader();
+        loader.load(this.resolvePath('./models/library.dae'),
+            function (collada) {
+              var shapes = collada.scene.children;
+              for (var i = shapes.length; i--;) {
+                var shapeMesh = shapes[i].children[0];
+                shapeMesh.material = faceMaterial;
+                this.shapes.add(shapeMesh);
+                var shapeLine = shapeMesh.clone();
+                shapeLine.material = lineMaterial;
+                shapeMesh.add(shapeLine);
+                shapeMesh.scale.set(20, 20, 20);
+                shapeMesh.visible = false;
+              }
+              this.shapes.children[0].visible = true;
+              this.$.viewport.renderLater();
+        }.bind(this));
+
+      },
+
+      shapeIndexChanged: function() {
+        for (var i = 0; i < this.shapes.children.length; i++) {
+          if (this.shapes.children[i].visible) {
+            this.shapes.children[i].visible = false;
+            this.shapes.children[this.shapeIndex].visible = true;
+            this.$.viewport.renderLater();
+            return;
+          }
+        }
+      }
+
+    });
+  </script>
+</polymer-element>
