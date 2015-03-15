@@ -1,0 +1,125 @@
+<!doctype html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+  <title>The A. Square Library od Shapes and Dimensions</title>
+  <script src="components/webcomponentsjs/webcomponents.js"></script>
+
+  <link rel="import" href="components/polymer/polymer.html">
+  <link rel="import" href="components/paper-slider/paper-slider.html">
+  <link rel="import" href="components/library-3d/library-3d.html">
+
+  <link href='http://fonts.googleapis.com/css?family=Merriweather' rel='stylesheet' type='text/css'>
+
+  <style type="text/css">
+    html {
+      -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    }
+    body{
+      background: #333333;
+      color: white;
+    }
+    @font-face {
+      font-family: Futura;
+      font-weight: bold;
+      src: url("fonts/FuturaStd-Bold.otf") format("opentype");
+    }
+    @font-face {
+      font-family: Futura;
+      src: url("fonts/FuturaStd-Heavy.otf") format("opentype");
+    }
+    h1 {
+      font-family: 'Merriweather', serif;
+      font-size: 32px;
+      padding: 0.5em;
+      text-align: center;
+      line-height: 1.2em;
+    }
+    .section {
+      font-family: Futura;
+      margin-top: -1px;
+      padding: 0 60px;
+    }
+    .main {
+      position: relative;
+      padding: 20px;
+      margin-right: 1px;
+      width: 300px;
+    }
+    .drawer {
+      position: relative;
+      padding: 20px;
+      width: 300px;
+    }
+    .section:not(.alt) > .drawer {
+      border: 1px solid #898989;
+    }
+    .section.alt > .main {
+      border: 1px solid #898989;
+    }
+    .drawer {
+      width: 300px;
+    }
+    .shape-slider {
+      position: absolute;
+      bottom: 0;
+      width: calc(100% - 40px);
+    }
+    paper-slider::shadow #sliderBar::shadow #activeProgress {
+      background-color: #fff;
+    }
+    paper-slider::shadow #sliderKnobInner {
+      background-color: #fff !important;
+    }
+    paper-slider::shadow #sliderBar::shadow #progressContainer {
+      background-color: #898989;
+    }
+    paper-slider::shadow /deep/ .slider-marker::after {
+      background-color: #e3e3e3;
+    }
+  </style>
+</head>
+<body unresolved fullbleed>
+<template is="auto-binding">
+  
+  <div class="section" horizontal layout>
+    <div class="main" flex>
+      <h1>The A. Square Memorial Library of Shapes and Dimensions</h1>
+    </div>
+    <div class="drawer">
+      <a>Under Construction</a>
+      <a>About</a>
+    </div>
+  </div>
+
+  <div class="section alt" horizontal layout>
+    <div class="main" flex>
+      <span>2D Library goes here</span>
+    </div>
+    <div class="drawer">
+      <span>2D Library controls</span>
+    </div>
+  </div>
+
+  <div class="section" horizontal layout>
+    <div class="main" flex>
+      <library-3d
+          shapeIndex="{{current3DShape}}">
+      </library-3d>
+      <paper-slider
+          class="shape-slider"
+          value="{{current3DShape}}"
+          min="0"
+          max="6"
+          snaps>
+      </paper-slider>
+    </div>
+    <div class="drawer">
+      <span>3D Library controls</span>
+    </div>
+  </div>
+
+</template>
+</body>
+</html>

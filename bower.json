@@ -16,6 +16,8 @@
   "dependencies": {
     "polymer": "Polymer/polymer#~0.5.5",
     "core-icons": "Polymer/core-icons#~0.5.5",
+    "core-drawer-panel": "Polymer/core-drawer-panel#~0.5.5",
+    "paper-slider": "Polymer/paper-slider#~0.5.5",
     "io-viewport": "https://github.com/arodic/io-viewport.git#~0.1.1",
     "io-bundle": "arodic/io-value#~0.6.6",
     "io-menu": "arodic/io-menu#~0.1.12"
