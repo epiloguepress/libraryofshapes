@@ -62205,7 +62205,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           // Create renderer for the first time.
           if (!renderer) {
             renderer = new THREE.WebGLRenderer({
-              antialias: false,
+              antialias: true,
               preserveDrawingBuffer: true,
               alpha: false
             });
@@ -62973,7 +62973,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <style type="text/css">
     :host {
       display: block;
-      height: 200px;
+      min-height: 100px;
       position: relative;
     }
     io-viewport /deep/ #outline {
