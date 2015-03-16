@@ -44,6 +44,13 @@
       margin-right: 1px;
       width: 300px;
     }
+    .main > h2 {
+      z-index: 2;
+      padding: 0;
+      margin: 0;
+      position: absolute;
+      
+    }
     .drawer {
       position: relative;
       padding: 20px;
@@ -97,7 +104,17 @@
 
   <div class="section alt" horizontal layout>
     <div class="main" flex>
-      <span>2D Library goes here</span>
+      <h2>2D</h2>
+      <library-3d
+          shapeIndex="{{current2DShape}}">
+      </library-3d>
+      <paper-slider
+          class="shape-slider"
+          immediateValue="{{current2DShape}}"
+          min="0"
+          max="6"
+          snaps>
+      </paper-slider>
     </div>
     <div class="drawer">
       <span>2D Library controls</span>
@@ -106,6 +123,7 @@
 
   <div class="section" horizontal layout>
     <div class="main" flex>
+      <h2>3D</h2>
       <library-3d
           shapeIndex="{{current3DShape}}">
       </library-3d>
@@ -122,6 +140,24 @@
     </div>
   </div>
 
+  <div class="section alt" horizontal layout>
+    <div class="main" flex>
+      <h2>4D</h2>
+      <library-3d
+          shapeIndex="{{current4DShape}}">
+      </library-3d>
+      <paper-slider
+          class="shape-slider"
+          immediateValue="{{current4DShape}}"
+          min="0"
+          max="6"
+          snaps>
+      </paper-slider>
+    </div>
+    <div class="drawer">
+      <span>4D Library controls</span>
+    </div>
+  </div>
 </template>
 </body>
 </html>
