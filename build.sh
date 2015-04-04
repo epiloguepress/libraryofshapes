@@ -1,0 +1,1 @@
+vulcanize --inline dependencies.html -o dependencies-vulcanized.html
