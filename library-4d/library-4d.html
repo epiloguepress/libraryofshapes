@@ -1,0 +1,36 @@
+<link rel="import" href="../components/polymer/polymer.html">
+<link rel="import" href="../components/three-js/three.html">
+
+<polymer-element name="library-4d">
+  <template>
+    <style type="text/css" shim-shadowdom>
+    :host {
+      display: block;
+      min-height: 100px;
+      position: relative;
+    }
+    </style>
+  </template>
+  <script type="text/javascript">
+    Polymer({
+
+      publish: {
+        shapeIndex: 0,
+        wireframe: 1,
+        opacity: 0.5
+      },
+
+      domReady: function() {
+
+        this.renderer = new THREE.WebGLRenderer({antialias: true});
+        this.renderer.setSize(this.clientWidth, this.clientHeight);
+        this.renderer.setClearColor("#333333");
+        this.shadowRoot.appendChild(this.renderer.domElement);
+
+        this.shapes = new THREE.Object3D();
+
+      }
+
+    });
+  </script>
+</polymer-element>

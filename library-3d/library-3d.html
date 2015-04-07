@@ -1,24 +1,18 @@
-<link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="../io-viewport/io-viewport.html">
+<link rel="import" href="../components/polymer/polymer.html">
+<link rel="import" href="../components/three-js/three.html">
 
-<script type="text/javascript" src="../three.js/examples/js/loaders/ColladaLoader.js"></script>
+<script type="text/javascript" src="../components/three.js/examples/js/loaders/ColladaLoader.js"></script>
+<script type="text/javascript" src="../lib/TrackballControls.js"></script>
 
 <polymer-element name="library-3d">
   <template>
-    <style type="text/css">
+    <style type="text/css" shim-shadowdom>
     :host {
       display: block;
       min-height: 100px;
       position: relative;
     }
-    io-viewport /deep/ #outline {
-      display: none;
-    }
     </style>
-    <io-viewport fit id="viewport"
-      clearColor="#333333"
-      showHelpers="false">
-    </io-viewport>
   </template>
   <script type="text/javascript">
     Polymer({
@@ -29,15 +23,39 @@
         opacity: 0.5
       },
 
-      ready: function() {
+      domReady: function() {
+
+        this.renderer = new THREE.WebGLRenderer({antialias: true});
+        this.renderer.setSize(this.clientWidth, this.clientHeight);
+        this.renderer.setClearColor("#333333");
+        this.shadowRoot.appendChild(this.renderer.domElement);
 
         this.shapes = new THREE.Object3D();
-        this.$.viewport.scene.add(this.shapes);
+
+        this.scene = new THREE.Scene();
+        this.scene.add(this.shapes);
         
+        this.camera = new THREE.PerspectiveCamera(20, this.clientWidth / this.clientHeight, 0.001, 10000);
+        this.camera.position.z = -130;
+        this.camera.lookAt(new THREE.Vector3());
+
+        this.controls = new THREE.TrackballControls(this.camera, this.renderer.domElement);
+        this.controls.addEventListener('change', function(event){
+          this.renderer.render(this.scene, this.camera);
+        }.bind(this));
+
+        this.controls.rotateSpeed = 3.0;
+        this.controls.noZoom = true;
+        this.controls.noPan = true;
+
+        this.renderer.domElement.addEventListener('mousemove', function(){
+          this.controls.update();
+        }.bind(this));
+
         var faceTexture = THREE.ImageUtils.loadTexture(
           this.resolvePath('./models/library.jpg'), null,
             function(){
-              this.$.viewport.renderLater();
+              this.renderer.render(this.scene, this.camera);
           }.bind(this)
         );
         faceTexture.anisotropy = 8;
@@ -55,7 +73,7 @@
         var lineTexture = THREE.ImageUtils.loadTexture(
           this.resolvePath('./models/library_lines.jpg'), null,
             function(){
-              this.$.viewport.renderLater();
+              this.renderer.render(this.scene, this.camera);
           }.bind(this)
         );
         lineTexture.anisotropy = 8;
@@ -84,7 +102,7 @@
                 shapeMesh.visible = false;
               }
               this.shapes.children[0].visible = true;
-              this.$.viewport.renderLater();
+              this.renderer.render(this.scene, this.camera);
         }.bind(this));
 
       },
@@ -94,7 +112,7 @@
           if (this.shapes.children[i].visible) {
             this.shapes.children[i].visible = false;
             this.shapes.children[this.shapeIndex].visible = true;
-            this.$.viewport.renderLater();
+            this.renderer.render(this.scene, this.camera);
             return;
           }
         }
@@ -106,7 +124,7 @@
 
       wireframeChanged: function() {
         this.lineMaterial.opacity = this.wireframe;
-        this.$.viewport.renderLater();
+        this.renderer.render(this.scene, this.camera);
       },
 
       gridChanged: function() {
@@ -115,7 +133,7 @@
 
       opacityChanged: function() {
         this.faceMaterial.opacity = this.opacity;
-        this.$.viewport.renderLater();
+        this.renderer.render(this.scene, this.camera);
       }
 
     });

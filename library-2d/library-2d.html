@@ -1,0 +1,102 @@
+<link rel="import" href="../components/polymer/polymer.html">
+<link rel="import" href="../components/three-js/three.html">
+
+<script src="../lib/tween.js"></script>
+<script src="../lib/two.js"></script>
+<script src="flatland.js"></script>
+<script src="texture.js"></script>
+<script src="backdrop.js"></script>
+<script src="shape.js"></script>
+
+<polymer-element name="library-2d">
+  <template>
+    <style type="text/css" shim-shadowdom>
+    :host {
+      display: block;
+      min-height: 100px;
+      position: relative;
+    }
+    </style>
+  </template>
+  <script type="text/javascript">
+(function(){
+
+    var scene = new THREE.Scene();
+    var camera = new THREE.PerspectiveCamera(75);
+
+    camera.position.tween = new TWEEN.Tween(camera.position)
+      .easing(TWEEN.Easing.Quadratic.InOut);
+
+    camera.position.z = 100;
+
+    var backdrop = new Flatland.Backdrop();
+
+    var triangle = new Flatland.Shape(3);
+    var circle = new Flatland.Shape(32);
+    var square = new Flatland.Shape(4);
+
+    triangle.rotation.z = Math.PI / 2
+    square.rotation.z = Math.PI / 4;
+    backdrop.position.z = - (camera.far - 10);
+
+    var shapes = [ triangle, square, circle ];
+
+    Polymer({
+
+      publish: {
+        shapeIndex: 0,
+        wireframe: 1,
+        opacity: 0.5
+      },
+
+      domReady: function() {
+
+        var width = this.clientWidth, height = this.clientHeight;
+
+        var renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(this.clientWidth, this.clientHeight);
+        renderer.setClearColor("#333333");
+        this.shadowRoot.appendChild(renderer.domElement);
+
+        square.position.x += 66;
+        circle.position.x -= 66;
+
+        scene.add(square);
+        scene.add(circle);
+        scene.add(triangle);
+        camera.add(backdrop);
+        scene.add(camera);
+
+        var loop = function() {
+          requestAnimationFrame(loop);
+
+          TWEEN.update();
+
+          camera.lookAt(triangle.position);
+
+          renderer.render(scene, camera);
+
+        }.bind(this);
+
+        loop();
+
+      },
+
+
+      shapeIndexChanged: function() {
+
+          var shape = shapes[this.shapeIndex];
+
+          shape.rotation.tween
+            .to({
+              x: shape.rotation.x + Math.PI / 2
+            }, 350)
+            .start();
+
+      },
+
+    });
+
+}());
+  </script>
+</polymer-element>

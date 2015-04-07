@@ -3,14 +3,17 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
   <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
-  <title>The A. Square Library od Shapes and Dimensions</title>
+  <title>The A. Square Library of Shapes and Dimensions</title>
 
+  <!-- <script src="components/webcomponentsjs/webcomponents.js"></script> -->
   <link rel="import" href="dependencies-vulcanized.html">
-  <!-- <link rel="import" href="dependencies.html"> -->
-
+  <link rel="import" href="dependencies.html">
+  <link rel="icon" type="image/png" href="./images/favicon.png">
   <link href='http://fonts.googleapis.com/css?family=Merriweather' rel='stylesheet' type='text/css'>
+  <script src="//use.typekit.net/lqx0otn.js"></script>
+  <script>try{Typekit.load();}catch(e){}</script>
 
-  <style type="text/css">
+  <style type="text/css" shim-shadowdom>
     html {
       -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     }
@@ -141,15 +144,15 @@
   <div class="section alt" horizontal layout>
     <div class="main" flex>
       <h2>2<span class="small-caps">d</span></h2>
-      <library-3d
+      <library-2d
           id="shape2D"
           shapeIndex="{{current2DShape}}">
-      </library-3d>
+      </library-2d>
       <paper-slider
           class="shape-slider"
           immediateValue="{{current2DShape}}"
           min="0"
-          max="6"
+          max="2"
           snaps>
       </paper-slider>
     </div>
@@ -221,10 +224,10 @@
   <div class="section alt" horizontal layout>
     <div class="main" flex>
       <h2>4<span class="small-caps">d</span></h2>
-      <library-3d
+      <library-4d
           id="shape4D"
           shapeIndex="{{current4DShape}}">
-      </library-3d>
+      </library-4d>
       <paper-slider
           class="shape-slider"
           immediateValue="{{current4DShape}}"
