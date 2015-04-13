@@ -16,6 +16,8 @@
   "dependencies": {
     "polymer": "Polymer/polymer#~0.5.5",
     "core-icons": "Polymer/core-icons#~0.5.5",
+    "core-selector": "Polymer/core-selector#~0.5.5",
+    "flatiron-director": "PolymerLabs/flatiron-director#~0.5.0",
     "core-drawer-panel": "Polymer/core-drawer-panel#~0.5.5",
     "paper-slider": "Polymer/paper-slider#~0.5.5",
     "paper-toggle-button": "Polymer/paper-toggle-button#~0.5.5",

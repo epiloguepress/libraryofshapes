@@ -46,50 +46,43 @@
     }
     .main {
       position: relative;
-      padding: 20px;
       margin-right: 1px;
       width: 300px;
-    }
-    .main > h2 {
-      z-index: 2;
-      padding: 0;
-      margin: 0;
-      position: absolute;
-      
+      border: 1px solid #898989;
     }
     .drawer {
       position: relative;
       padding: 20px;
       width: 300px;
     }
+    #page-selector {
+      text-align: center;
+    }
+    #page-selector > h2 {
+      font-size: 46px;
+      display: inline;
+      margin: 0 0.3em;
+    }
     @media (max-width: 920px) {
       .drawer {
         display: none;
       }
     }
-    .section:not(.alt) > .drawer {
-      border: 1px solid #898989;
-    }
-    .section.alt > .main {
-      border: 1px solid #898989;
-    }
-    .drawer a {
+    .drawer a,
+    .drawer p {
       display: block;
       color: #fff;
       text-decoration: none;
-    }
-    .drawer a,
-    .drawer.params p {
       margin-top: 30px;
     }
     .drawer .grey,
-    .drawer.params .title {
+    .drawer .title {
       color: #898989;
     }
-    .drawer.params paper-toggle-button {
+    .drawer paper-toggle-button {
       float: right;
     }
-    .drawer.params paper-slider {
+    .drawer paper-slider {
       width: 100%;
       margin-top: 10px;
     }
@@ -130,135 +123,98 @@
 </head>
 <body unresolved fullbleed>
 <template is="auto-binding">
-  
+
+  <flatiron-director route="{{page}}" autoHash></flatiron-director>
   <div class="section" horizontal layout>
-    <div class="main" flex>
+    <div flex>
       <h1>The A. Square Memorial Library of Shapes and Dimensions</h1>
+      <core-selector selected="{{page}}" id="page-selector">
+        <h2>2<span class="small-caps">d</span></h2>
+        <h2>3<span class="small-caps">d</span></h2>
+        <h2>4<span class="small-caps">d</span></h2>
+      </core-selector>
     </div>
     <div class="drawer">
-      <a href="#" class="grey">Under Construction</a>
-      <a href="#">About</a>
-    </div>
-  </div>
-
-  <div class="section alt" horizontal layout>
-    <div class="main" flex>
-      <h2>2<span class="small-caps">d</span></h2>
-      <library-2d
-          id="shape2D"
-          shapeIndex="{{current2DShape}}">
-      </library-2d>
-      <paper-slider
-          class="shape-slider"
-          immediateValue="{{current2DShape}}"
-          min="0"
-          max="2"
-          snaps>
-      </paper-slider>
-    </div>
-    <div class="drawer params">
-      <span>2D Library controls</span>
-      <p>
-        <span class="title">wireframe</span>
-        <br />
-        <paper-slider
-            immediateValue="{{$.shape2D.wireframe}}"
-            min="0"
-            max="1"
-            step="0.01">
-        </paper-slider>
-      </p>
-      <p>
-        <span class="title">opacity</span>
-        <br />
-        <paper-slider
-            immediateValue="{{$.shape2D.opacity}}"
-            min="0"
-            max="1"
-            step="0.01">
-        </paper-slider>
-      </p>
+    {{page}}
     </div>
   </div>
 
   <div class="section" horizontal layout>
-    <div class="main" flex>
-      <h2>3<span class="small-caps">d</span></h2>
-      <library-3d
-          id="shape3D"
-          shapeIndex="{{current3DShape}}">
-      </library-3d>
-      <paper-slider
-          class="shape-slider"
-          immediateValue="{{current3DShape}}"
-          min="0"
-          max="6"
-          snaps>
-      </paper-slider>
-    </div>
-    <div class="drawer params">
-      <span>3D Library controls</span>
-      <p>
-        <span class="title">wireframe</span>
-        <br />
+    <template if="{{page == 0}}">
+      <div class="main" flex>
+        <library-2d
+            id="shape2D"
+            shapeIndex="{{current2DShape}}">
+        </library-2d>
         <paper-slider
-            immediateValue="{{$.shape3D.wireframe}}"
+            class="shape-slider"
+            immediateValue="{{current2DShape}}"
             min="0"
-            max="1"
-            step="0.01">
+            max="2"
+            snaps>
         </paper-slider>
-      </p>
-      <p>
-        <span class="title">opacity</span>
-        <br />
+      </div>
+      <div class="drawer">
+        <span>2D Library controls</span>
+      </div>
+    </template>
+    <template if="{{page == 1}}">
+      <div class="main" flex>
+        <library-3d
+            id="shape3D"
+            shapeIndex="{{current3DShape}}">
+        </library-3d>
         <paper-slider
-            immediateValue="{{$.shape3D.opacity}}"
+            class="shape-slider"
+            immediateValue="{{current3DShape}}"
             min="0"
-            max="1"
-            step="0.01">
+            max="6"
+            snaps>
         </paper-slider>
-      </p>
-    </div>
-  </div>
-
-  <div class="section alt" horizontal layout>
-    <div class="main" flex>
-      <h2>4<span class="small-caps">d</span></h2>
-      <library-4d
-          id="shape4D"
-          shapeIndex="{{current4DShape}}">
-      </library-4d>
-      <paper-slider
-          class="shape-slider"
-          immediateValue="{{current4DShape}}"
-          min="0"
-          max="6"
-          snaps>
-      </paper-slider>
-    </div>
-    <div class="drawer params">
-      <span>4D Library controls</span>
-      <p>
-        <span class="title">wireframe</span>
-        <br />
+      </div>
+      <div class="drawer">
+        <span>3D Library controls</span>
+        <p>
+          <span class="title">wireframe</span>
+          <br />
+          <paper-slider
+              immediateValue="{{$.shape3D.wireframe}}"
+              min="0"
+              max="1"
+              step="0.01">
+          </paper-slider>
+        </p>
+        <p>
+          <span class="title">opacity</span>
+          <br />
+          <paper-slider
+              immediateValue="{{$.shape3D.opacity}}"
+              min="0"
+              max="1"
+              step="0.01">
+          </paper-slider>
+        </p>
+      </div>
+    </template>
+    <template if="{{page == 2}}">
+      <div class="main" flex>
+        <library-4d
+            id="shape4D"
+            shapeIndex="{{current4DShape}}">
+        </library-4d>
         <paper-slider
-            immediateValue="{{$.shape4D.wireframe}}"
+            class="shape-slider"
+            immediateValue="{{current4DShape}}"
             min="0"
-            max="1"
-            step="0.01">
+            max="6"
+            snaps>
         </paper-slider>
-      </p>
-      <p>
-        <span class="title">opacity</span>
-        <br />
-        <paper-slider
-            immediateValue="{{$.shape4D.opacity}}"
-            min="0"
-            max="1"
-            step="0.01">
-        </paper-slider>
-      </p>
-    </div>
+      </div>
+      <div class="drawer">
+        <span>4D Library controls</span>
+        </p>
+      </div>
+    </template>
   </div>
 </template>
 
