@@ -51,6 +51,18 @@
     .section + .section {
       margin-bottom: 60px;
     }
+    .content-container {
+      display: none;
+      width: 100%;
+    }
+    .content-container.enabled {
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      -ms-flex-direction: row;
+      -webkit-flex-direction: row;
+      flex-direction: row;
+    }
     .main {
       position: relative;
       margin-right: 1px;
@@ -176,9 +188,9 @@
   </style>
 </head>
 <body unresolved fullbleed>
-<template is="auto-binding">
+<template is="auto-binding" attributes="page">
 
-  <flatiron-director route="{{page}}" autoHash></flatiron-director>
+  <!-- <flatiron-director route="{{page}}" autoHash></flatiron-director> -->
   <div class="section" horizontal layout>
     <div flex>
       <h1>The A. Square Memorial Library of Shapes and Dimensions</h1>
@@ -189,12 +201,13 @@
       </core-selector>
     </div>
     <div class="drawer">
-      <span class="hidden">{{page}}</span>
+      <!-- <span class="hidden">{{page}}</span> -->
     </div>
   </div>
 
   <div class="section" horizontal layout>
-    <template if="{{page == 0}}">
+
+    <div class="content-container {{ {enabled: page === 0} | tokenList }}">
       <div class="main" flex>
         <div class="under-construction">
           <p>Under Construction</p>
@@ -212,7 +225,7 @@
         </paper-slider>
       </div>
       <div class="drawer">
-        <span>2D Library controls</span>
+        <span>2D Library Controls</span>
         <p>
           <span class="title">wireframe</span>
           <br />
@@ -234,8 +247,9 @@
           </paper-slider>
         </p>
       </div>
-    </template>
-    <template if="{{page == 1}}">
+    </div>
+
+    <div class="content-container {{ {enabled: page === 1} | tokenList }}">
       <div class="main" flex>
         <library-3d
             id="shape3D"
@@ -250,7 +264,7 @@
         </paper-slider>
       </div>
       <div class="drawer">
-        <span>3D Library controls</span>
+        <span>3D Library Controls</span>
         <p>
           <span class="title">wireframe</span>
           <br />
@@ -272,26 +286,27 @@
           </paper-slider>
         </p>
       </div>
-    </template>
-    <template if="{{page == 2}}">
+    </div>
+
+    <div class="content-container {{ {enabled: page === 2} | tokenList }}">
       <div class="main" flex>
+        <div class="under-construction">
+          <p>Under Construction</p>
+        </div>
 <!--         <library-4d
             id="shape4D"
             shapeIndex="{{current4DShape}}">
         </library-4d> -->
-        <div class="under-construction">
-          <p>Under Construction</p>
-        </div>
         <paper-slider
             class="shape-slider"
             immediateValue="{{current4DShape}}"
             min="0"
-            max="6"
+            max="2"
             snaps>
         </paper-slider>
       </div>
       <div class="drawer">
-        <span>4D Library controls</span>
+        <span>4D Library Controls</span>
         <p>
           <span class="title">wireframe</span>
           <br />
@@ -313,9 +328,14 @@
           </paper-slider>
         </p>
       </div>
-    </template>
+    </div>
+
   </div>
 </template>
+<script>
+  var template = document.querySelector('template');
+  template.page = 1;
+</script>
 
 </body>
 </html>

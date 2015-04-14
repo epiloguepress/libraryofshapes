@@ -17,6 +17,10 @@
   <script type="text/javascript">
     Polymer({
 
+      eventDelegates: {
+          'core-resize': 'resize'
+      },
+
       publish: {
         shapeIndex: 0,
         wireframe: 1,
@@ -26,7 +30,6 @@
       domReady: function() {
 
         this.renderer = new THREE.WebGLRenderer({antialias: true});
-        this.renderer.setSize(this.clientWidth, this.clientHeight);
         this.renderer.setClearColor("#222");
         this.shadowRoot.appendChild(this.renderer.domElement);
 
@@ -39,13 +42,15 @@
         this.camera.position.z = -130;
         this.camera.lookAt(new THREE.Vector3());
 
+        this.setSize(this.clientWidth, this.clientHeight);
+
         this.controls = new THREE.TrackballControls(this.camera, this.renderer.domElement);
-        this.controls.addEventListener('change', function(event){
-          this.renderer.render(this.scene, this.camera);
-        }.bind(this));
+        // this.controls.addEventListener('change', function(event){
+        //   this.renderer.render(this.scene, this.camera);
+        // }.bind(this));
 
         this.controls.rotateSpeed = 3.0;
-        this.controls.noZoom = true;
+        this.controls.noZoom = false;
         this.controls.noPan = true;
 
         this.renderer.domElement.addEventListener('mousemove', function(){
@@ -102,8 +107,20 @@
                 shapeMesh.visible = false;
               }
               this.shapes.children[0].visible = true;
-              this.renderer.render(this.scene, this.camera);
+              // this.renderer.render(this.scene, this.camera);
         }.bind(this));
+
+        var loop = function() {
+          if (this.clientWidth !== this.renderer.width
+            || this.clientHeight !== this.renderer.height) {
+            this.setSize(this.clientWidth, this.clientHeight);
+          }
+          this.controls.update();
+          this.renderer.render(this.scene, this.camera);
+          requestAnimationFrame(loop);
+        }.bind(this);
+
+        loop();
 
       },
 
@@ -112,7 +129,7 @@
           if (this.shapes.children[i].visible) {
             this.shapes.children[i].visible = false;
             this.shapes.children[this.shapeIndex].visible = true;
-            this.renderer.render(this.scene, this.camera);
+            // this.renderer.render(this.scene, this.camera);
             return;
           }
         }
@@ -124,7 +141,7 @@
 
       wireframeChanged: function() {
         this.lineMaterial.opacity = this.wireframe;
-        this.renderer.render(this.scene, this.camera);
+        // this.renderer.render(this.scene, this.camera);
       },
 
       gridChanged: function() {
@@ -133,7 +150,15 @@
 
       opacityChanged: function() {
         this.faceMaterial.opacity = this.opacity;
-        this.renderer.render(this.scene, this.camera);
+        // this.renderer.render(this.scene, this.camera);
+      },
+
+      setSize: function(width, height) {
+        this.renderer.setSize(width, height);
+        this.renderer.width = width;
+        this.renderer.height = height;
+        this.camera.aspect = width / height;
+        this.camera.updateProjectionMatrix();
       }
 
     });
