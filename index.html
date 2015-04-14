@@ -56,6 +56,7 @@
       margin-right: 1px;
       width: 300px;
       border: 1px solid #898989;
+      min-height: 500px;
     }
     .drawer {
       position: relative;
@@ -148,6 +149,27 @@
       position: relative;
       margin-bottom: 30px;
     }
+    .under-construction {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
+    .under-construction p {
+      position: absolute;
+      display: block;
+      color: #888;
+      font-size: 20px;
+      line-height: 20px;
+      text-align: center;
+      top: 50%;
+      left: 0;
+      width: 100%;
+      margin-top: -10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
     .hidden {
       display: none;
     }
@@ -174,10 +196,13 @@
   <div class="section" horizontal layout>
     <template if="{{page == 0}}">
       <div class="main" flex>
-        <library-2d
+        <div class="under-construction">
+          <p>Under Construction</p>
+        </div>
+<!--         <library-2d
             id="shape2D"
             shapeIndex="{{current2DShape}}">
-        </library-2d>
+        </library-2d> -->
         <paper-slider
             class="shape-slider"
             immediateValue="{{current2DShape}}"
@@ -188,6 +213,26 @@
       </div>
       <div class="drawer">
         <span>2D Library controls</span>
+        <p>
+          <span class="title">wireframe</span>
+          <br />
+          <paper-slider
+              immediateValue="{{$.shape3D.wireframe}}"
+              min="0"
+              max="1"
+              step="0.01">
+          </paper-slider>
+        </p>
+        <p>
+          <span class="title">opacity</span>
+          <br />
+          <paper-slider
+              immediateValue="{{$.shape3D.opacity}}"
+              min="0"
+              max="1"
+              step="0.01">
+          </paper-slider>
+        </p>
       </div>
     </template>
     <template if="{{page == 1}}">
@@ -230,10 +275,13 @@
     </template>
     <template if="{{page == 2}}">
       <div class="main" flex>
-        <library-4d
+<!--         <library-4d
             id="shape4D"
             shapeIndex="{{current4DShape}}">
-        </library-4d>
+        </library-4d> -->
+        <div class="under-construction">
+          <p>Under Construction</p>
+        </div>
         <paper-slider
             class="shape-slider"
             immediateValue="{{current4DShape}}"
@@ -244,6 +292,8 @@
       </div>
       <div class="drawer">
         <span>4D Library controls</span>
+        <p>
+          <span class="title">Under Construction</span>
         </p>
       </div>
     </template>
