@@ -61383,7 +61383,7 @@ THREE.TrackballControls = function ( object, domElement ) {
 
 		if ( _this.enabled === false ) return;
 
-		// event.preventDefault();
+		event.preventDefault();
 		event.stopPropagation();
 
 		var delta = 0;
@@ -65853,6 +65853,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <script type="text/javascript">
     Polymer('library-3d',{
 
+      eventDelegates: {
+          'core-resize': 'resize'
+      },
+
       publish: {
         shapeIndex: 0,
         wireframe: 1,
@@ -65862,8 +65866,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       domReady: function() {
 
         this.renderer = new THREE.WebGLRenderer({antialias: true});
-        this.renderer.setSize(this.clientWidth, this.clientHeight);
-        this.renderer.setClearColor("#333333");
+        this.renderer.setClearColor("#222");
         this.shadowRoot.appendChild(this.renderer.domElement);
 
         this.shapes = new THREE.Object3D();
@@ -65875,13 +65878,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.camera.position.z = -130;
         this.camera.lookAt(new THREE.Vector3());
 
+        this.setSize(this.clientWidth, this.clientHeight);
+
         this.controls = new THREE.TrackballControls(this.camera, this.renderer.domElement);
-        this.controls.addEventListener('change', function(event){
-          this.renderer.render(this.scene, this.camera);
-        }.bind(this));
+        // this.controls.addEventListener('change', function(event){
+        //   this.renderer.render(this.scene, this.camera);
+        // }.bind(this));
 
         this.controls.rotateSpeed = 3.0;
-        this.controls.noZoom = true;
+        this.controls.noZoom = false;
         this.controls.noPan = true;
 
         this.renderer.domElement.addEventListener('mousemove', function(){
@@ -65938,8 +65943,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 shapeMesh.visible = false;
               }
               this.shapes.children[0].visible = true;
-              this.renderer.render(this.scene, this.camera);
+              // this.renderer.render(this.scene, this.camera);
         }.bind(this));
+
+        var loop = function() {
+          if (this.clientWidth !== this.renderer.width
+            || this.clientHeight !== this.renderer.height) {
+            this.setSize(this.clientWidth, this.clientHeight);
+          }
+          this.controls.update();
+          this.renderer.render(this.scene, this.camera);
+          requestAnimationFrame(loop);
+        }.bind(this);
+
+        loop();
 
       },
 
@@ -65948,7 +65965,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           if (this.shapes.children[i].visible) {
             this.shapes.children[i].visible = false;
             this.shapes.children[this.shapeIndex].visible = true;
-            this.renderer.render(this.scene, this.camera);
+            // this.renderer.render(this.scene, this.camera);
             return;
           }
         }
@@ -65960,7 +65977,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       wireframeChanged: function() {
         this.lineMaterial.opacity = this.wireframe;
-        this.renderer.render(this.scene, this.camera);
+        // this.renderer.render(this.scene, this.camera);
       },
 
       gridChanged: function() {
@@ -65969,7 +65986,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       opacityChanged: function() {
         this.faceMaterial.opacity = this.opacity;
-        this.renderer.render(this.scene, this.camera);
+        // this.renderer.render(this.scene, this.camera);
+      },
+
+      setSize: function(width, height) {
+        this.renderer.setSize(width, height);
+        this.renderer.width = width;
+        this.renderer.height = height;
+        this.camera.aspect = width / height;
+        this.camera.updateProjectionMatrix();
       }
 
     });
