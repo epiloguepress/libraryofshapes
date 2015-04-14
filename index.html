@@ -6,10 +6,10 @@
   <title>The A. Square Library of Shapes and Dimensions</title>
 
   <script src="components/webcomponentsjs/webcomponents.js"></script>
-  <link rel="import" href="dependencies-vulcanized.html">
-  <!-- <link rel="import" href="dependencies.html"> -->
+  <!-- <link rel="import" href="dependencies-vulcanized.html"> -->
+  <link rel="import" href="dependencies.html">
   <link rel="icon" type="image/png" href="./images/favicon.png">
-  <link href='http://fonts.googleapis.com/css?family=Merriweather' rel='stylesheet' type='text/css'>
+  <!-- <link href='http://fonts.googleapis.com/css?family=Merriweather' rel='stylesheet' type='text/css'> -->
   <script src="//use.typekit.net/lqx0otn.js"></script>
   <script>try{Typekit.load();}catch(e){}</script>
 
@@ -18,7 +18,7 @@
       -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     }
     body{
-      background: #333333;
+      background: #222222;
       color: white;
     }
     @font-face {
@@ -31,11 +31,15 @@
       src: url("fonts/FuturaStd-Heavy.otf") format("opentype");
     }
     h1 {
-      font-family: 'Merriweather', serif;
+      font-family: "Baskerville", Times, serif;
       font-size: 32px;
       padding: 0.5em;
       text-align: center;
       line-height: 1.2em;
+      font-weight: normal;
+      letter-spacing: 0;
+      margin: 0;
+      text-transform: capitalize;
     }
     .section {
       font-family: Futura;
@@ -118,6 +122,23 @@
       text-transform: uppercase;
       font-size: 75%;
       vertical-align: baseline;
+    }
+    core-selector {
+      text-align: center;
+      width: 100%;
+      display: block;
+      position: relative;
+      margin-bottom: 30px;
+    }
+    core-selector h2 {
+      color: #8a8a8a;
+      font-weight: 500;
+      display: inline-block;
+      cursor: pointer;
+    }
+    core-selector h2.core-selected {
+      color: #fff;
+      font-weight: 900;
     }
   </style>
 </head>
