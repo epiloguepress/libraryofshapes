@@ -38,7 +38,7 @@
       line-height: 1.2em;
       font-weight: normal;
       letter-spacing: 0;
-      margin: 0;
+      margin: 30px 0 0 0;
       text-transform: capitalize;
     }
     .section {
@@ -47,6 +47,9 @@
       padding: 0 60px;
       letter-spacing: 2px;
       text-transform: uppercase;
+    }
+    .section + .section {
+      margin-bottom: 60px;
     }
     .main {
       position: relative;
@@ -63,9 +66,16 @@
       text-align: center;
     }
     #page-selector > h2 {
+      color: #8a8a8a;
+      font-weight: 500;
       font-size: 46px;
       display: inline;
       margin: 0 0.3em;
+      cursor: pointer;
+    }
+    #page-selector > h2.core-selected {
+      color: #fff;
+      font-weight: 900;
     }
     @media (max-width: 920px) {
       .drawer {
@@ -98,8 +108,12 @@
     }
     .shape-slider {
       position: absolute;
-      bottom: 0;
+      bottom: -16.5px;
+      left: 20px;
       width: calc(100% - 40px);
+    }
+    .shape-slider::shadow #sliderBar {
+      height: 1px;
     }
     paper-slider::shadow #sliderBar::shadow #activeProgress {
       background-color: #fff;
@@ -110,8 +124,12 @@
     paper-slider::shadow #sliderBar::shadow #progressContainer {
       background-color: #898989;
     }
+    paper-slider::shadow /deep/ .slider-markers::after,
     paper-slider::shadow /deep/ .slider-marker::after {
       background-color: #e3e3e3;
+      height: 3px;
+      width: 3px;
+      margin-top: -1px;
     }
     library-4d,
     library-3d,
@@ -130,15 +148,8 @@
       position: relative;
       margin-bottom: 30px;
     }
-    core-selector h2 {
-      color: #8a8a8a;
-      font-weight: 500;
-      display: inline-block;
-      cursor: pointer;
-    }
-    core-selector h2.core-selected {
-      color: #fff;
-      font-weight: 900;
+    .hidden {
+      display: none;
     }
   </style>
 </head>
@@ -156,7 +167,7 @@
       </core-selector>
     </div>
     <div class="drawer">
-    {{page}}
+      <span class="hidden">{{page}}</span>
     </div>
   </div>
 
