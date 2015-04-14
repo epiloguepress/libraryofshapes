@@ -217,7 +217,7 @@
           <span class="title">wireframe</span>
           <br />
           <paper-slider
-              immediateValue="{{$.shape3D.wireframe}}"
+              immediateValue="{{$.shape2D.wireframe}}"
               min="0"
               max="1"
               step="0.01">
@@ -227,7 +227,7 @@
           <span class="title">opacity</span>
           <br />
           <paper-slider
-              immediateValue="{{$.shape3D.opacity}}"
+              immediateValue="{{$.shape2D.opacity}}"
               min="0"
               max="1"
               step="0.01">
@@ -293,7 +293,24 @@
       <div class="drawer">
         <span>4D Library controls</span>
         <p>
-          <span class="title">Under Construction</span>
+          <span class="title">wireframe</span>
+          <br />
+          <paper-slider
+              immediateValue="{{$.shape4D.wireframe}}"
+              min="0"
+              max="1"
+              step="0.01">
+          </paper-slider>
+        </p>
+        <p>
+          <span class="title">opacity</span>
+          <br />
+          <paper-slider
+              immediateValue="{{$.shape4D.opacity}}"
+              min="0"
+              max="1"
+              step="0.01">
+          </paper-slider>
         </p>
       </div>
     </template>
