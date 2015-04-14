@@ -47,11 +47,6 @@
       text-indent: -9999px;
       overflow: hidden;
     }
-    @media screen and (max-width: 500px) {
-      h1 {
-        margin: 30px auto 0 auto;
-      }
-    }
     .section {
       font-family: Futura;
       margin-top: -1px;
@@ -103,11 +98,6 @@
     #page-selector > h2.core-selected {
       color: #fff;
       font-weight: 900;
-    }
-    @media (max-width: 920px) {
-      .drawer {
-        display: none;
-      }
     }
     .drawer a,
     .drawer p {
@@ -199,6 +189,25 @@
     .hidden {
       display: none;
     }
+
+    @media (max-width: 500px) {
+      h1 {
+        margin: 30px auto 0 auto;
+        padding: 0;
+      }
+      #page-selector > h2 {
+        font-size: 28px;
+      }
+      .section.content {
+        padding: 0 20px;
+      }
+    }
+    @media (max-width: 920px) {
+      .drawer {
+        display: none;
+      }
+    }
+
   </style>
 </head>
 <body unresolved fullbleed>
